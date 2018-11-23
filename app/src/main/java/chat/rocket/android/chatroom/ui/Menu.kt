@@ -56,7 +56,7 @@ internal fun ChatRoomFragment.setupMenu(menu: Menu) {
 
 internal fun ChatRoomFragment.setOnMenuItemClickListener(item: MenuItem) {
     when (item.itemId) {
-        MENU_ACTION_FAVORITE_UNFAVORITE_CHAT -> presenter.toggleFavoriteChatRoom(
+        MENU_ACTION_FAVORITE_UNFAVOURITE_CHAT -> presenter.toggleFavoriteChatRoom(
             chatRoomId,
             isFavorite
         )
@@ -125,7 +125,7 @@ private fun ChatRoomFragment.setupFavoriteMenuItem(menu: Menu) {
     if (isFavorite) {
         menu.add(
             Menu.NONE,
-            MENU_ACTION_FAVORITE_UNFAVORITE_CHAT,
+            MENU_ACTION_FAVORITE_UNFAVOURITE_CHAT,
             Menu.NONE,
             R.string.title_unfavorite_chat
         ).setIcon(R.drawable.ic_star_yellow_24dp)
@@ -133,7 +133,7 @@ private fun ChatRoomFragment.setupFavoriteMenuItem(menu: Menu) {
     } else {
         menu.add(
             Menu.NONE,
-            MENU_ACTION_FAVORITE_UNFAVORITE_CHAT,
+            MENU_ACTION_FAVORITE_UNFAVOURITE_CHAT,
             Menu.NONE,
             R.string.title_favorite_chat
         ).setIcon(R.drawable.ic_star_border_white_24dp)
