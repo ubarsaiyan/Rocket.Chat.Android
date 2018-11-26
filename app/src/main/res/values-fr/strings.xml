@@ -218,6 +218,8 @@
     <string name="action_msg_add_reaction">Ajouter une réaction</string>
     <!-- TODO - Add proper translation -->
     <string name="action_msg_copy_permalink">Copy permalink</string>
+    <!-- TODO - Add proper translation -->
+    <string name="action_msg_report">Report</string>
 
     <!-- Permission messages -->
     <string name="permission_editing_not_allowed">L\'édition n\'est pas autorisée</string>
@@ -326,4 +328,10 @@
     <string name="msg_sent_attachment">Envoyé un fichier</string>
     <!--TODO - Add proper translation-->
     <string name="message_room_changed_privacy">Room type changed to: %1$s by %2$s</string>
+
+    <!-- Report -->
+    <!--TODO - Add proper translation-->
+    <string name="submit">Submit</string>
+    <!--TODO - Add proper translation-->
+    <string name="required">*required</string>
 </resources>

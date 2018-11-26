@@ -216,6 +216,8 @@
     <string name="action_msg_add_reaction">Reaktion hinzufügen</string>
     <!-- TODO - Add proper translation -->
     <string name="action_msg_copy_permalink">Copy permalink</string>
+    <!-- TODO - Add proper translation -->
+    <string name="action_msg_report">Report</string>
 
     <!-- Permission messages -->
     <string name="permission_editing_not_allowed">Bearbeiten nicht erlaubt</string>

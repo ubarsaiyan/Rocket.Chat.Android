@@ -209,7 +209,9 @@
     <string name="action_msg_share">Condividi</string>
     <string name="action_title_editing">Modifica messaggio</string>
     <string name="action_msg_add_reaction">Aggiungi reazione</string>
-    <string name="action_msg_copy_permalink">Copia permalink</string>3
+    <string name="action_msg_copy_permalink">Copia permalink</string>
+    <!-- TODO - Add proper translation -->
+    <string name="action_msg_report">Report</string>
 
     <!-- Permission messages -->
     <string name="permission_editing_not_allowed">La modifica non è consentita</string>
@@ -316,4 +318,9 @@
     <string name="message_information_title">Informazioni Messaggio</string>
     <string name="message_room_changed_privacy">Il tipo di stanza è cambiato in: %1$s da %2$s</string>
 
+    <!-- Report -->
+    <!--TODO - Add proper translation-->
+    <string name="submit">Submit</string>
+    <!--TODO - Add proper translation-->
+    <string name="required">*required</string>
 </resources>

@@ -68,17 +68,17 @@ import chat.rocket.android.helper.ImageHelper
 import chat.rocket.android.helper.KeyboardHelper
 import chat.rocket.android.helper.MessageParser
 import chat.rocket.android.util.extension.asObservable
+import chat.rocket.android.util.extension.createImageFile
 import chat.rocket.android.util.extensions.circularRevealOrUnreveal
 import chat.rocket.android.util.extensions.fadeIn
 import chat.rocket.android.util.extensions.fadeOut
+import chat.rocket.android.util.extensions.getBitmpap
 import chat.rocket.android.util.extensions.hideKeyboard
 import chat.rocket.android.util.extensions.inflate
 import chat.rocket.android.util.extensions.rotateBy
 import chat.rocket.android.util.extensions.showToast
 import chat.rocket.android.util.extensions.textContent
 import chat.rocket.android.util.extensions.ui
-import chat.rocket.android.util.extension.createImageFile
-import chat.rocket.android.util.extensions.getBitmpap
 import chat.rocket.common.model.RoomType
 import chat.rocket.common.model.roomTypeOf
 import chat.rocket.core.internal.realtime.socket.model.State
@@ -86,16 +86,17 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.dialog_report.view.*
 import kotlinx.android.synthetic.main.emoji_image_row_item.*
 import kotlinx.android.synthetic.main.emoji_row_item.*
 import kotlinx.android.synthetic.main.fragment_chat_room.*
 import kotlinx.android.synthetic.main.message_attachment_options.*
 import kotlinx.android.synthetic.main.message_composer.*
 import kotlinx.android.synthetic.main.message_list.*
+import kotlinx.android.synthetic.main.reaction_praises_list_item.*
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import kotlinx.android.synthetic.main.reaction_praises_list_item.*
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -1172,5 +1173,37 @@ class ChatRoomFragment : Fragment(), ChatRoomView, EmojiKeyboardListener, EmojiR
 
     override fun sendMessage(chatRoomId: String, text: String) {
         presenter.sendMessage(chatRoomId, text, null)
+    }
+
+    override fun reportMessage(id: String) {
+        val root = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_report, null)
+        val disposable = CompositeDisposable()
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle(R.string.action_msg_report)
+            .setCancelable(true)
+            .setView(root)
+            .setOnDismissListener {
+                disposable.clear()
+            }
+            .show()
+
+        with(root) {
+            disposable.add(
+                edit_text_description.asObservable()
+                    .skip(1)
+                    .subscribe { if (it.isNotEmpty()) text_view_error.fadeOut() }
+            )
+
+            button_send_report.setOnClickListener {
+                val description = edit_text_description.text.toString()
+                if (description.isBlank()) {
+                    text_view_error.fadeIn()
+                } else {
+                    dialog.dismiss()
+                    presenter.reportMessage(messageId = id, description = description)
+                }
+            }
+        }
     }
 }

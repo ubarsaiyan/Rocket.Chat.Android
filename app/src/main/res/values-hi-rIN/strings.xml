@@ -217,6 +217,8 @@
     <string name="action_msg_add_reaction">प्रतिक्रिया जोड़ें</string>
     <!-- TODO - Add proper translation -->
     <string name="action_msg_copy_permalink">Copy permalink</string>
+    <!-- TODO - Add proper translation -->
+    <string name="action_msg_report">Report</string>
 
     <!-- Permission messages -->
     <string name="permission_editing_not_allowed">संपादन की अनुमति नहीं है</string>
@@ -323,4 +325,10 @@
     <string name="message_information_title">संदेश की जानकारी</string>
     <string name="msg_log_out">लॉग आउट कर रहा हूं…</string>
     <string name="message_room_changed_privacy">%2$s ने रूम का प्रकार बदलकर %1$s किया </string>
+
+    <!-- Report -->
+    <!--TODO - Add proper translation-->
+    <string name="submit">Submit</string>
+    <!--TODO - Add proper translation-->
+    <string name="required">*required</string>
 </resources>
