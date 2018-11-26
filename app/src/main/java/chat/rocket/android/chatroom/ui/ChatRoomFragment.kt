@@ -1176,34 +1176,7 @@ class ChatRoomFragment : Fragment(), ChatRoomView, EmojiKeyboardListener, EmojiR
     }
 
     override fun reportMessage(id: String) {
-        val root = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_report, null)
-        val disposable = CompositeDisposable()
-
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setTitle(R.string.action_msg_report)
-            .setCancelable(true)
-            .setView(root)
-            .setOnDismissListener {
-                disposable.clear()
-            }
-            .show()
-
-        with(root) {
-            disposable.add(
-                edit_text_description.asObservable()
-                    .skip(1)
-                    .subscribe { if (it.isNotEmpty()) text_view_error.fadeOut() }
-            )
-
-            button_send_report.setOnClickListener {
-                val description = edit_text_description.text.toString()
-                if (description.isBlank()) {
-                    text_view_error.fadeIn()
-                } else {
-                    dialog.dismiss()
-                    presenter.reportMessage(messageId = id, description = description)
-                }
-            }
-        }
+        presenter.reportMessage(messageId = id,
+            description = "This message was reported by a user from the Android app")
     }
 }

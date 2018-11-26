@@ -325,8 +325,7 @@
     <string name="message_room_changed_privacy">O tipo da sala mudou para: %1$s por %2$s</string>
 
     <!-- Report -->
-    <!--TODO - Add proper translation-->
     <string name="submit">Enviar</string>
-    <!--TODO - Add proper translation-->
     <string name="required">*obrigatório</string>
+    <string name="report_sent">A mensagem foi reportada!</string>
 </resources>
