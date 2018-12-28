@@ -9,19 +9,40 @@
     android:paddingEnd="8dp"
     android:paddingStart="0dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/profile_image_avatar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginRight="24dp"
-        android:foregroundGravity="center"
-        android:background="@drawable/widechat_circle_shadow"
-        app:roundedCornerRadius="3dp"
-        fresco:actualImageScaleType="centerCrop"
-        fresco:roundAsCircle="true"
-        fresco:roundingBorderColor="@color/colorWhite"
-        fresco:roundingBorderPadding="2dp"
-        fresco:roundingBorderWidth="2dp" />
+        android:layout_marginRight="24dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/profile_image_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/widechat_circle_shadow"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundedCornerRadius="3dp"
+            fresco:actualImageScaleType="centerCrop"
+            fresco:roundAsCircle="true"
+            fresco:roundingBorderColor="@color/colorWhite"
+            fresco:roundingBorderPadding="2dp"
+            fresco:roundingBorderWidth="2dp" />
+
+        <ImageView
+            android:id="@+id/self_status"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/widechat_white_circle"
+            android:padding="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/profile_image_avatar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
    <androidx.appcompat.widget.SearchView
        android:layout_width="wrap_content"

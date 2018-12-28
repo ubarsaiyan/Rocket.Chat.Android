@@ -55,6 +55,7 @@ import chat.rocket.android.settings.ui.SettingsFragment
 import chat.rocket.android.util.extensions.avatarUrl
 import com.facebook.drawee.view.SimpleDraweeView
 import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.coroutines.experimental.launch
 
 internal const val TAG_CHAT_ROOMS_FRAGMENT = "ChatRoomsFragment"
 
@@ -89,6 +90,7 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
     private var searchText:  TextView? = null
     private var searchCloseButton: ImageView? = null
     private var profileButton: SimpleDraweeView? = null
+    private var currentUserStatusIcon: ImageView? = null
     // handles that recurring connection status bug in widechat
     private var currentlyConnected: Boolean? = false
 
@@ -470,6 +472,7 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
                 this?.setCustomView(R.layout.widechat_search_layout)
 
                 searchView = this?.getCustomView()?.findViewById(R.id.action_widechat_search)
+                currentUserStatusIcon = this?.getCustomView()?.findViewById(R.id.self_status)
                 setupWidechatSearchView()
 
                 val serverUrl = serverInteractor.get()
@@ -488,6 +491,14 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()
                 }
+                launch {
+                    val currentUser = presenter.getCurrentUser(false)
+                    val drawable = DrawableHelper.getUserStatusDrawable(currentUser?.status, context!!)
+                    ui {
+                        currentUserStatusIcon?.setImageDrawable(drawable)
+                    }
+                }
+
             }
         } else {
             (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.title_chats)
