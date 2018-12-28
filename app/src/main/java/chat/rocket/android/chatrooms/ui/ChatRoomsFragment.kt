@@ -131,6 +131,7 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
             searchView?.setQuery("", false)
             viewModel.showLastMessage = true
         }
+        setCurrentUserStatusIcon()
         super.onResume()
     }
 
@@ -437,6 +438,7 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
                 is State.Connected -> {
                     text_connection_status.text = getString(R.string.status_connected)
                     handler.postDelayed(dismissStatus, 2000)
+                    setCurrentUserStatusIcon()
                 }
                 is State.Disconnected -> text_connection_status.text =
                         getString(R.string.status_disconnected)
@@ -472,7 +474,6 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
                 this?.setCustomView(R.layout.widechat_search_layout)
 
                 searchView = this?.getCustomView()?.findViewById(R.id.action_widechat_search)
-                currentUserStatusIcon = this?.getCustomView()?.findViewById(R.id.self_status)
                 setupWidechatSearchView()
 
                 val serverUrl = serverInteractor.get()
@@ -491,18 +492,24 @@ class ChatRoomsFragment : Fragment(), ChatRoomsView {
                     fragmentTransaction.addToBackStack(null)
                     fragmentTransaction.commit()
                 }
-                launch {
-                    val currentUser = presenter.getCurrentUser(false)
-                    val drawable = DrawableHelper.getUserStatusDrawable(currentUser?.status, context!!)
-                    ui {
-                        currentUserStatusIcon?.setImageDrawable(drawable)
-                    }
-                }
 
             }
         } else {
             (activity as AppCompatActivity?)?.supportActionBar?.title = getString(R.string.title_chats)
             (activity as MainActivity).setupNavigationView()
+        }
+    }
+
+    private fun setCurrentUserStatusIcon() {
+        with((activity as AppCompatActivity?)?.supportActionBar) {
+            currentUserStatusIcon = this?.getCustomView()?.findViewById(R.id.self_status)
+        }
+        launch {
+            val currentUser = presenter.getCurrentUser(false)
+            val drawable = DrawableHelper.getUserStatusDrawable(currentUser?.status, context!!)
+            ui {
+                currentUserStatusIcon?.setImageDrawable(drawable)
+            }
         }
     }
 
