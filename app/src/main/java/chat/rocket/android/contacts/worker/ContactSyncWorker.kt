@@ -65,9 +65,11 @@ class ContactSyncWorker(context : Context, params : WorkerParameters)
                         }
                     }
                     val intersectionSet: Set<String> = intersection.toSet()
+                    Timber.d("intersection: ${intersectionSet}")
                     contactArrayList.forEachIndexed { index, contact ->
                         run {
                             if (strongHashes[index] in intersectionSet) {
+                                Timber.d("contact123sync: ${contact}")
                                 contact.setUsername(intersectionMap[strongHashes[index]])
                             }
                         }

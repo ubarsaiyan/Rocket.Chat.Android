@@ -25,6 +25,17 @@
         fresco:roundingBorderPadding="2dp"
         fresco:roundingBorderWidth="2dp" />
 
+    <ImageView
+        android:id="@+id/contact_status"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/circle_background_white"
+        android:padding="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/contact_image_avatar" />
+
     <TextView
         android:id="@+id/contact_detail"
         android:layout_width="wrap_content"

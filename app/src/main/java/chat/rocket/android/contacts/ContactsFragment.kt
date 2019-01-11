@@ -38,6 +38,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -131,7 +132,7 @@ class ContactsFragment : Fragment() {
                 .subscribeBy(
                         onSuccess = { contactEntities ->
                             contactArrayList = ArrayList(contactEntities.map { contactEntity ->
-                                run{
+                                run {
                                     val contact = Contact()
                                     contact.setName(contactEntity.name!!)
                                     if (contactEntity.isPhone) {
