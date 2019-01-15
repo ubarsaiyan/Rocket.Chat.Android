@@ -11,9 +11,10 @@ import android.util.Log
 import chat.rocket.android.emoji.internal.GlideApp
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class EmojiParser {
 
@@ -120,7 +121,7 @@ class EmojiParser {
             text: CharSequence,
             factory: Spannable.Factory? = null
         ): Deferred<CharSequence> {
-            return async(CommonPool) { parse(context, text, factory) }
+            return GlobalScope.async(Dispatchers.IO) { parse(context, text, factory) }
         }
     }
 }

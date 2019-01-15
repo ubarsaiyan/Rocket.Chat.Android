@@ -167,12 +167,6 @@ dependencies {
     androidTestImplementation libraries.espressoIntents
 }
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
-
 androidExtensions {
     experimental = true
 }

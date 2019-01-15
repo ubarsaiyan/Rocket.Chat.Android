@@ -10,9 +10,10 @@ import chat.rocket.android.emoji.internal.db.EmojiDatabase
 import chat.rocket.android.emoji.internal.isCustom
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.GlideException
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -21,7 +22,6 @@ import java.io.InputStreamReader
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
-import kotlin.coroutines.experimental.buildSequence
 
 
 object EmojiRepository {
@@ -44,7 +44,7 @@ object EmojiRepository {
     }
 
     fun load(context: Context, customEmojis: List<Emoji> = emptyList(), path: String = "emoji.json") {
-        launch(CommonPool) {
+        GlobalScope.launch(Dispatchers.IO) {
             this@EmojiRepository.customEmojis = customEmojis
             val allEmojis = mutableListOf<Emoji>()
             db = EmojiDatabase.getInstance(context)
@@ -132,7 +132,7 @@ object EmojiRepository {
     }
 
     private suspend fun saveEmojisToDatabase(emojis: List<Emoji>) {
-        withContext(CommonPool) {
+        withContext(Dispatchers.IO) {
             db.emojiDao().insertAllEmojis(*emojis.toTypedArray())
         }
     }
@@ -146,16 +146,16 @@ object EmojiRepository {
      *
      * @return All emojis for all categories.
      */
-    suspend fun getAll(): List<Emoji> = withContext(CommonPool) {
+    suspend fun getAll(): List<Emoji> = withContext(Dispatchers.IO) {
         return@withContext db.emojiDao().loadAllEmojis()
     }
 
     internal suspend fun getEmojiSequenceByCategory(category: EmojiCategory): Sequence<Emoji> {
-        val list = withContext(CommonPool) {
+        val list = withContext(Dispatchers.IO) {
             db.emojiDao().loadEmojisByCategory(category.name)
         }
 
-        return buildSequence {
+        return sequence {
             list.forEach {
                 yield(it)
             }
@@ -163,11 +163,11 @@ object EmojiRepository {
     }
 
     internal suspend fun getEmojiSequenceByCategoryAndUrl(category: EmojiCategory, url: String): Sequence<Emoji> {
-        val list = withContext(CommonPool) {
+        val list = withContext(Dispatchers.IO) {
             db.emojiDao().loadEmojisByCategoryAndUrl(category.name, "$url%")
         }
 
-        return buildSequence {
+        return sequence {
             list.forEach {
                 yield(it)
             }
@@ -181,7 +181,7 @@ object EmojiRepository {
      *
      * @return Emoji given by shortname or null
      */
-    private suspend fun getEmojiByShortname(shortname: String): Emoji? = withContext(CommonPool) {
+    private suspend fun getEmojiByShortname(shortname: String): Emoji? = withContext(Dispatchers.IO) {
         return@withContext db.emojiDao().loadAllCustomEmojis().firstOrNull()
     }
 
@@ -203,9 +203,9 @@ object EmojiRepository {
     }
 
     internal suspend fun getCustomEmojisAsync(): List<Emoji> {
-        return withContext(CommonPool) {
+        return withContext(Dispatchers.IO) {
             db.emojiDao().loadAllCustomEmojis().also {
-                this.customEmojis = it
+                customEmojis = it
             }
         }
     }
@@ -217,7 +217,7 @@ object EmojiRepository {
      *
      * @return All recent emojis ordered by usage.
      */
-    internal suspend fun getRecents(): List<Emoji> = withContext(CommonPool) {
+    internal suspend fun getRecents(): List<Emoji> = withContext(Dispatchers.IO) {
         val list = mutableListOf<Emoji>()
         val recentsJson = JSONObject(preferences.getString(PREF_EMOJI_RECENTS, "{}"))
 
@@ -315,7 +315,7 @@ object EmojiRepository {
     }
 
     fun init(context: Context) {
-        launch {
+        GlobalScope.launch {
             db = EmojiDatabase.getInstance(context)
             preferences = context.getSharedPreferences("emoji", Context.MODE_PRIVATE)
             cachedTypeface = Typeface.createFromAsset(context.assets, "fonts/emojione-android.ttf")

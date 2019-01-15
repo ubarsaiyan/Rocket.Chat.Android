@@ -18,10 +18,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.emoji_category_layout.view.*
 import kotlinx.android.synthetic.main.emoji_image_row_item.view.*
 import kotlinx.android.synthetic.main.emoji_row_item.view.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 internal class EmojiPagerAdapter(private val listener: EmojiKeyboardListener) : PagerAdapter() {
@@ -44,7 +44,7 @@ internal class EmojiPagerAdapter(private val listener: EmojiKeyboardListener) : 
             emoji_recycler_view.setRecycledViewPool(RecyclerView.RecycledViewPool())
 
             container.addView(view)
-            launch(UI) {
+            GlobalScope.launch(Dispatchers.Main) {
                 val currentServerUrl = EmojiRepository.getCurrentServerUrl()
                 val emojis = if (category != EmojiCategory.RECENTS) {
                     if (category == EmojiCategory.CUSTOM) {
@@ -111,9 +111,9 @@ internal class EmojiPagerAdapter(private val listener: EmojiKeyboardListener) : 
         }
 
         suspend fun addEmojisFromSequence(emojiSequence: Sequence<Emoji>) {
-            withContext(CommonPool) {
+            withContext(Dispatchers.IO) {
                 emojiSequence.forEachIndexed { index, emoji ->
-                    withContext(UI) {
+                    withContext(Dispatchers.Main) {
                         allEmojis.add(emoji)
                         if (emoji.isDefault) {
                             emojis.add(emoji)
